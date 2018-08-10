@@ -3,6 +3,37 @@
 #include <string.h>
 #include "biblioteca.h"
 
+/*Calculo del lenguaje universal para cadenas de hasta longitud k
+  sin reservar espacio para almacenar todas las cadenas ya que se 
+  requeriria demasiada memoria. Es decir solo imprime los resultados*/
+void
+lenguaje_universal(char ** alfabeto, int k)
+{
+ static int i = 0;
+ static char ** lenguaje_actual=NULL;
+ if(i == 0)
+ {
+  lenguaje_actual = alfabeto;
+  printf("Para cadenas de hasta %d longitud el lenguaje universal sera:\n",k);
+  printf("Σ^* = {ε");
+ };
+
+ if(i == k)
+ {
+  printf("}\n"); 
+ }else
+ {
+  for(int j=0;lenguaje_actual[j][0] != '\0';j++)
+  {
+   printf(",%s",lenguaje_actual[j]); 
+  };
+  lenguaje_actual = concatenar_lenguajes(lenguaje_actual,alfabeto);
+  i++;
+  lenguaje_universal(alfabeto,k);
+ };
+ 
+};
+
 int
 cardinalidad_lenguaje(char ** lenguaje)
 {
@@ -35,7 +66,14 @@ reservar_memoria(int filas,int columnas)
 };
 
 char **
-potenciar_lenguaje(char ** lenguaje);
+potenciar_lenguaje(char ** lenguaje, int potencia)
+{
+ if(potencia == 1)
+ {
+  return lenguaje;
+ };
+ return concatenar_lenguajes(lenguaje,potenciar_lenguaje(lenguaje,potencia-1));
+};
 
 char **
 concatenar_lenguajes(char ** L1,char ** L2)
@@ -60,7 +98,6 @@ concatenar_lenguajes(char ** L1,char ** L2)
    k++;
    };
  };
-  printf("K vale %d\n",k);
   lenguaje_concatenacion[k] = (char *) malloc(sizeof(char)*2);
   lenguaje_concatenacion[k][0] = '\0';
   lenguaje_concatenacion[k][1] = '\0';
@@ -103,5 +140,5 @@ imprimir_lenguaje(char ** lenguaje)
  {
   printf("La cadena %d del lenguaje es:%s\n",i,lenguaje[i]);
  };
-
 };
+
