@@ -7,13 +7,39 @@
   sin reservar espacio para almacenar todas las cadenas ya que se 
   requeriria demasiada memoria. Es decir solo imprime los resultados*/
 
+int 
+contar_unos(char * cadena)
+{
+  int numero_unos = 0;
+  for(int i=0;cadena[i] != '\0';i++)
+  {
+    if(cadena[i] == '1')
+    {
+     numero_unos++; 
+    };
+  };
+  return numero_unos;
+};
+
 void
 lenguaje_universal(char ** alfabeto, int k)
 {
  static int i = 0;
  static char ** lenguaje_actual=NULL;
  static FILE * archivo = NULL;
- if( k > 100 )
+ static FILE * datos = NULL;
+
+ if(datos == NULL)
+ {
+   datos = fopen("datos.txt","w");
+   if(datos == NULL)
+   {
+    printf("Error no se pudo abrir el archivo\nSaliendo...\n");
+    exit(-1);
+   };
+ };
+ 
+ if( k > 15 )
  {
   if(archivo == NULL)
   {
@@ -38,10 +64,13 @@ lenguaje_universal(char ** alfabeto, int k)
   fprintf(archivo,"}\n"); 
   }else
   {
+  int l=0;
   for(int j=0;lenguaje_actual[j][0] != '\0';j++)
   {
    fprintf(archivo,",%s",lenguaje_actual[j]); 
+   l += contar_unos(lenguaje_actual[j]);
   };
+   fprintf(datos,"%d %d\n",i+1,l);
   lenguaje_actual = concatenar_lenguajes(lenguaje_actual,alfabeto);
   i++;
   lenguaje_universal(alfabeto,k);
@@ -63,10 +92,13 @@ lenguaje_universal(char ** alfabeto, int k)
    printf("}\n"); 
   }else
   {
+  int l=0;
   for(int j=0;lenguaje_actual[j][0] != '\0';j++)
   {
    printf(",%s",lenguaje_actual[j]); 
+   l += contar_unos(lenguaje_actual[j]);
   };
+  fprintf(datos,"%d %d\n",i+1,l);
   lenguaje_actual = concatenar_lenguajes(lenguaje_actual,alfabeto);
   i++;
   lenguaje_universal(alfabeto,k);

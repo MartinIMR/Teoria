@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+int
+contar_unos(char *);
+
 void 
 lenguaje_universal(char **,int);
 
