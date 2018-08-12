@@ -6,23 +6,63 @@
 /*Calculo del lenguaje universal para cadenas de hasta longitud k
   sin reservar espacio para almacenar todas las cadenas ya que se 
   requeriria demasiada memoria. Es decir solo imprime los resultados*/
+
 void
 lenguaje_universal(char ** alfabeto, int k)
 {
  static int i = 0;
  static char ** lenguaje_actual=NULL;
- if(i == 0)
+ static FILE * archivo = NULL;
+ if( k > 100 )
  {
+  if(archivo == NULL)
+  {
+    archivo = fopen("universal.txt","w");
+   if(archivo == NULL)
+   {
+    printf("Error no se pudo abrir el archivo\nSaliendo...\n");
+    exit(-1);
+   };
+
+  };
+  
+  if(i == 0)
+  {
+  lenguaje_actual = alfabeto;
+  fprintf(archivo,"Para cadenas de hasta %d longitud el lenguaje universal sera:\n",k);
+  fprintf(archivo,"Σ^* = {ε");
+  };
+
+  if(i == k)
+  {
+  fprintf(archivo,"}\n"); 
+  }else
+  {
+  for(int j=0;lenguaje_actual[j][0] != '\0';j++)
+  {
+   fprintf(archivo,",%s",lenguaje_actual[j]); 
+  };
+  lenguaje_actual = concatenar_lenguajes(lenguaje_actual,alfabeto);
+  i++;
+  lenguaje_universal(alfabeto,k);
+  };
+
+
+ }else
+ {
+
+  if(i == 0)
+  {
   lenguaje_actual = alfabeto;
   printf("Para cadenas de hasta %d longitud el lenguaje universal sera:\n",k);
   printf("Σ^* = {ε");
- };
+  };
 
- if(i == k)
- {
-  printf("}\n"); 
- }else
- {
+  if(i == k)
+  {
+   printf("}\n"); 
+  }else
+  {
   for(int j=0;lenguaje_actual[j][0] != '\0';j++)
   {
    printf(",%s",lenguaje_actual[j]); 
@@ -30,8 +70,10 @@ lenguaje_universal(char ** alfabeto, int k)
   lenguaje_actual = concatenar_lenguajes(lenguaje_actual,alfabeto);
   i++;
   lenguaje_universal(alfabeto,k);
+  };
+
  };
- 
+
 };
 
 int
