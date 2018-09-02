@@ -5,7 +5,7 @@ convertir_binario(int);
 void
 obtener_primos(int *,int *,char **,int);
 
-int 
+void 
 criba_eratostenes(int *, int);
 
 int

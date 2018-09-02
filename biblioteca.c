@@ -54,7 +54,7 @@ convertir_binario(int numero)
 void
 obtener_primos(int * lista,int * primos,char ** binarios,int cantidad)
 {
- FILE * archivo_primos, * archivo_binarios;
+ FILE * archivo_primos, * archivo_binarios, * archivo_grafica;
  archivo_primos = fopen("primos.txt","w");
  archivo_binarios = fopen("binarios.txt","w");
  if(archivo_primos == NULL || archivo_binarios == NULL  )
@@ -67,14 +67,17 @@ obtener_primos(int * lista,int * primos,char ** binarios,int cantidad)
  for(int i = 0, j = 0 ; i < cantidad ;i++)
  {
     while(lista[j++] == 0);
+    j--;
     primos[i] = lista[j];
     *(binarios + i) = convertir_binario(primos[i]);
     fprintf(archivo_primos,"%d,",primos[i]);
     fprintf(archivo_binarios,"%s,",binarios[i]);
     j++;
  }
- fprintf(archivo_primos,"}");
- fprintf(archivo_binarios,"}");
+ fprintf(archivo_primos,"\b}");
+ fprintf(archivo_binarios,"\b}");
+ fprintf(archivo_primos,"\n");
+ fprintf(archivo_binarios,"\n");
  fclose(archivo_primos);
  fclose(archivo_binarios);
 
@@ -176,20 +179,17 @@ cardinalidad_lenguaje(char ** lenguaje)
  return i;
 };
 
-/* Modifica la lista dada dejando solo los numeros que son primos 
-   y regresa el numero de ellos */
+/* Modifica la lista dada dejando solo los numeros que son primos */
 
-int
+void 
 criba_eratostenes(int * lista,int n)
 {
- int cantidad = 0;
  int raiz = (int) floor(sqrt(n));
  for(int i = 2; i <= raiz; i++ )
  {
    if(lista[i-2] != 0)
    {
 	int primo = lista[i-2];
-	cantidad++;
 	int limite = (int) floor(n/primo);
 	for(int j = 2 ; j <= limite ; j++)
 	{
@@ -198,7 +198,7 @@ criba_eratostenes(int * lista,int n)
    };
 
  };
- return cantidad;
+
 };
 
 
