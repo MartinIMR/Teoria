@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "biblioteca.h"
 
 /*Calculo del lenguaje universal para cadenas de hasta longitud k
@@ -21,6 +22,65 @@ contar_unos(char * cadena)
   return numero_unos;
 };
 
+char *
+convertir_binario(int numero)
+{
+ int cociente,residuo;
+ char caracter;
+ char * cadena;
+ static int i,n=0;
+ cociente = (int)(numero/2);
+ residuo = numero % 2;
+ caracter = (int)(residuo + '0');
+ n++;
+ if(cociente == 0)
+ {
+  i = n;
+  cadena = (char *) malloc(sizeof(char)*(n+1));
+  if(cadena == NULL)
+  {
+    printf("No se pudo reservar memoria\n");
+  }
+  cadena[n] = '\0';
+ }else
+ {
+ cadena = convertir_binario(cociente);
+ }
+ cadena[n-i] = caracter;
+ i--;
+ return cadena;
+}
+
+void
+obtener_primos(int * lista,int * primos,char ** binarios,int cantidad)
+{
+ FILE * archivo_primos, * archivo_binarios;
+ archivo_primos = fopen("primos.txt","w");
+ archivo_binarios = fopen("binarios.txt","w");
+ if(archivo_primos == NULL || archivo_binarios == NULL  )
+ {
+  printf("Un archivo no pudo ser abierto...\n");
+  return;
+ }
+ fprintf(archivo_primos,"Los primos son:\n{");
+ fprintf(archivo_binarios,"Los primos en binario son:\n{");
+ for(int i = 0, j = 0 ; i < cantidad ;i++)
+ {
+    while(lista[j++] == 0);
+    primos[i] = lista[j];
+    *(binarios + i) = convertir_binario(primos[i]);
+    fprintf(archivo_primos,"%d,",primos[i]);
+    fprintf(archivo_binarios,"%s,",binarios[i]);
+    j++;
+ }
+ fprintf(archivo_primos,"}");
+ fprintf(archivo_binarios,"}");
+ fclose(archivo_primos);
+ fclose(archivo_binarios);
+
+}
+
+
 void
 lenguaje_universal(char ** alfabeto, int k)
 {
@@ -39,7 +99,7 @@ lenguaje_universal(char ** alfabeto, int k)
    };
  };
  
- if( k > 15 )
+ if( k > 19 )
  {
   if(archivo == NULL)
   {
@@ -115,6 +175,32 @@ cardinalidad_lenguaje(char ** lenguaje)
  for(i=0;lenguaje[i][0] != '\0';i++);
  return i;
 };
+
+/* Modifica la lista dada dejando solo los numeros que son primos 
+   y regresa el numero de ellos */
+
+int
+criba_eratostenes(int * lista,int n)
+{
+ int cantidad = 0;
+ int raiz = (int) floor(sqrt(n));
+ for(int i = 2; i <= raiz; i++ )
+ {
+   if(lista[i-2] != 0)
+   {
+	int primo = lista[i-2];
+	cantidad++;
+	int limite = (int) floor(n/primo);
+	for(int j = 2 ; j <= limite ; j++)
+	{
+	  lista[(primo*j)-2] = 0;
+	};
+   };
+
+ };
+ return cantidad;
+};
+
 
 char **
 reservar_memoria(int filas,int columnas)

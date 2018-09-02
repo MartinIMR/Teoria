@@ -1,6 +1,12 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+
+char *
+convertir_binario(int);
+
+void
+obtener_primos(int *,int *,char **,int);
+
+int 
+criba_eratostenes(int *, int);
 
 int
 contar_unos(char *);
