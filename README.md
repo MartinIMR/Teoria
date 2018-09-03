@@ -1,2 +1,2 @@
-# Teoria
-Repositorio para encargos de teoría computacional
+# Teoría Computacional
+Repositorio con programas relacionados a teoría computacional.
