@@ -2,11 +2,27 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <time.h>
 #include "biblioteca.h"
 
 /*Calculo del lenguaje universal para cadenas de hasta longitud k
   sin reservar espacio para almacenar todas las cadenas ya que se 
   requeriria demasiada memoria. Es decir solo imprime los resultados*/
+
+int
+aleatorio(int maximo)
+{
+ static int i = 0;
+ if(!i)
+ {
+   time_t semilla;
+   srand((unsigned)time(0));
+   i++;
+ }
+ return (rand() % (maximo+1));
+
+}
+
 
 int 
 contar_unos(char * cadena)
@@ -57,7 +73,8 @@ obtener_primos(int * lista,int * primos,char ** binarios,int cantidad)
  FILE * archivo_primos, * archivo_binarios, * archivo_grafica;
  archivo_primos = fopen("primos.txt","w");
  archivo_binarios = fopen("binarios.txt","w");
- if(archivo_primos == NULL || archivo_binarios == NULL  )
+ archivo_grafica = fopen("./Grafica/datos.txt","w");
+ if(archivo_primos == NULL || archivo_binarios == NULL || archivo_grafica == NULL )
  {
   printf("Un archivo no pudo ser abierto...\n");
   return;
@@ -72,6 +89,7 @@ obtener_primos(int * lista,int * primos,char ** binarios,int cantidad)
     *(binarios + i) = convertir_binario(primos[i]);
     fprintf(archivo_primos,"%d,",primos[i]);
     fprintf(archivo_binarios,"%s,",binarios[i]);
+    fprintf(archivo_grafica,"%d %d\n",primos[i],contar_unos(binarios[i]));
     j++;
  }
  fprintf(archivo_primos,"\b}");
@@ -80,7 +98,7 @@ obtener_primos(int * lista,int * primos,char ** binarios,int cantidad)
  fprintf(archivo_binarios,"\n");
  fclose(archivo_primos);
  fclose(archivo_binarios);
-
+ fclose(archivo_grafica);
 }
 
 

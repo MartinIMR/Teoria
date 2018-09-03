@@ -1,4 +1,7 @@
 
+int 
+aleatorio(int);
+
 char *
 convertir_binario(int);
 
