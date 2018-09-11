@@ -101,25 +101,82 @@ obtener_primos(int * lista,int * primos,char ** binarios,int cantidad)
  fclose(archivo_grafica);
 }
 
-
+/* Version mejorada */
 void
-lenguaje_universal(char ** alfabeto, int k)
+lenguaje_universal(FILE * universal,FILE * datos,char ** alfabeto, int k)
+{
+ char ** lenguaje_actual = alfabeto;
+ fprintf(universal,"Para cadenas de hasta %d longitud el lenguaje universal es:\n",k);
+  #if defined(_WIN32) || defined(_WIN64)
+   fprintf(universal,"E^* = {e");
+  #else
+   fprintf(universal,"Σ^* = {ε");
+  #endif
+ if(k < 10)
+ {
+  printf("Para cadenas de hasta %d longitud el lenguaje universal es:\n",k);
+   #if defined(_WIN32) || defined(_WIN64)
+    printf("E^* = {e");
+   #else
+    printf("Σ^* = {ε");
+   #endif
+ }
+ int i,j;
+ for(i = j = 0; i < k;i++)
+ { 
+   while(lenguaje_actual[j][0] != '\0')
+   {
+     fprintf(universal,",%s",lenguaje_actual[j]);
+     if(k < 10)
+     {
+	printf(",%s",lenguaje_actual[j]);
+     }
+     fprintf(datos,"%d %d\n",j+1,contar_unos(lenguaje_actual[j]));
+     j++;
+   }
+   lenguaje_actual = concatenar_lenguajes(lenguaje_actual,alfabeto);
+ }
+ 
+ fprintf(universal,"}\n");
+ if(k < 10)
+ {
+    printf("}\n");
+ }
+ free(lenguaje_actual);
+ 
+};
+
+
+/*Fin version mejorada*/
+
+/*   Viejo codigo :
+void
+lenguaje_universal(FILE * universal,FILE * datos,char ** alfabeto, int k)
 {
  static int i = 0;
  static char ** lenguaje_actual=NULL;
- static FILE * archivo = NULL;
- static FILE * datos = NULL;
-
- if(datos == NULL)
- {
-   datos = fopen("datos.txt","w");
-   if(datos == NULL)
-   {
-    printf("Error no se pudo abrir el archivo\nSaliendo...\n");
-    exit(-1);
-   };
- };
  
+  if(i == 0)
+  {
+  lenguaje_actual = alfabeto;
+  fprintf(archivo,"Para cadenas de hasta %d longitud el lenguaje universal es:\n",k);
+   #if defined(_WIN32) || defined(_WIN64)
+    fprintf(archivo,"E^* = {e");
+   #else
+    fprintf(archivo,"Σ^* = {ε");
+   #endif
+    if(k < 12)
+    {
+     printf("Para cadenas de hasta %d longitud el lenguaje universal es:\n",k);
+     #if defined(_WIN32) || defined(_WIN64)
+      printf("E^* = {e");
+     #else
+      printf("Σ^* = {ε");
+     #endif
+    }
+
+   };
+
  if( k > 19 )
  {
   if(archivo == NULL)
@@ -188,6 +245,10 @@ lenguaje_universal(char ** alfabeto, int k)
  };
 
 };
+
+
+*/
+
 
 int
 cardinalidad_lenguaje(char ** lenguaje)

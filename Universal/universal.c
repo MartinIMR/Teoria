@@ -12,6 +12,18 @@ main(void)
  int k;
  printf("Introduce la potencia\n");
  scanf("%d",&k);
- lenguaje_universal(sigma,k);
+ FILE * archivo_universal = NULL;
+ FILE * archivo_datos = NULL;
+ archivo_universal = fopen("universal.txt","w");
+ archivo_datos = fopen("./Grafica/datos.txt","w");
+ if(archivo_universal == NULL || archivo_datos == NULL)
+ {
+  printf("Un archivo no pudo ser abierto...\n");
+  return -1;
+ }
+ lenguaje_universal(archivo_universal,archivo_datos,sigma,k);
+ fclose(archivo_universal);
+ fclose(archivo_datos);
+ free(sigma);
  return 0;
 };

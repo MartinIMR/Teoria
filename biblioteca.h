@@ -15,7 +15,7 @@ int
 contar_unos(char *);
 
 void 
-lenguaje_universal(char **,int);
+lenguaje_universal(FILE *, FILE *,char **,int);
 
 char **
 convertir_AL(char *);
