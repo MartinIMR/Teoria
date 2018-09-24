@@ -9,6 +9,30 @@
   sin reservar espacio para almacenar todas las cadenas ya que se 
   requeriria demasiada memoria. Es decir solo imprime los resultados*/
 
+
+char *
+generar_cadena(int longitud)
+{
+ char * cadena = NULL;
+ if(longitud == 0 )
+ {
+  cadena = (char *) malloc(sizeof(char)); 
+  if(cadena == NULL)
+  {
+   printf("La cadena no se pudo generar \n");
+  }
+  cadena[0] = '\0';
+  return cadena;
+ }
+ cadena = (char *) malloc(sizeof(char) * (longitud+1)); 
+ cadena[longitud] = '\0';
+ for(int i=0; i < longitud;i++ )
+ {
+   cadena[i] = (char)(aleatorio(1) + '0');
+ }
+ return cadena;
+}
+
 int
 aleatorio(int maximo)
 {
@@ -148,106 +172,6 @@ lenguaje_universal(FILE * universal,FILE * datos,char ** alfabeto, int k)
 
 
 /*Fin version mejorada*/
-
-/*   Viejo codigo :
-void
-lenguaje_universal(FILE * universal,FILE * datos,char ** alfabeto, int k)
-{
- static int i = 0;
- static char ** lenguaje_actual=NULL;
- 
-  if(i == 0)
-  {
-  lenguaje_actual = alfabeto;
-  fprintf(archivo,"Para cadenas de hasta %d longitud el lenguaje universal es:\n",k);
-   #if defined(_WIN32) || defined(_WIN64)
-    fprintf(archivo,"E^* = {e");
-   #else
-    fprintf(archivo,"Σ^* = {ε");
-   #endif
-    if(k < 12)
-    {
-     printf("Para cadenas de hasta %d longitud el lenguaje universal es:\n",k);
-     #if defined(_WIN32) || defined(_WIN64)
-      printf("E^* = {e");
-     #else
-      printf("Σ^* = {ε");
-     #endif
-    }
-
-   };
-
- if( k > 19 )
- {
-  if(archivo == NULL)
-  {
-    archivo = fopen("universal.txt","w");
-   if(archivo == NULL)
-   {
-    printf("Error no se pudo abrir el archivo\nSaliendo...\n");
-    exit(-1);
-   };
-
-  };
-  
-  if(i == 0)
-  {
-  lenguaje_actual = alfabeto;
-  fprintf(archivo,"Para cadenas de hasta %d longitud el lenguaje universal sera:\n",k);
-  fprintf(archivo,"Σ^* = {ε");
-  };
-
-  if(i == k)
-  {
-  fprintf(archivo,"}\n"); 
-  }else
-  {
-  int l=0;
-  for(int j=0;lenguaje_actual[j][0] != '\0';j++)
-  {
-   fprintf(archivo,",%s",lenguaje_actual[j]); 
-   l += contar_unos(lenguaje_actual[j]);
-  };
-   fprintf(datos,"%d %d\n",i+1,l);
-  lenguaje_actual = concatenar_lenguajes(lenguaje_actual,alfabeto);
-  i++;
-  lenguaje_universal(alfabeto,k);
-  };
-
-
- }else
- {
-
-  if(i == 0)
-  {
-  lenguaje_actual = alfabeto;
-  printf("Para cadenas de hasta %d longitud el lenguaje universal sera:\n",k);
-  printf("Σ^* = {ε");
-  };
-
-  if(i == k)
-  {
-   printf("}\n"); 
-  }else
-  {
-  int l=0;
-  for(int j=0;lenguaje_actual[j][0] != '\0';j++)
-  {
-   printf(",%s",lenguaje_actual[j]); 
-   l += contar_unos(lenguaje_actual[j]);
-  };
-  fprintf(datos,"%d %d\n",i+1,l);
-  lenguaje_actual = concatenar_lenguajes(lenguaje_actual,alfabeto);
-  i++;
-  lenguaje_universal(alfabeto,k);
-  };
-
- };
-
-};
-
-
-*/
 
 
 int

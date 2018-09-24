@@ -1,4 +1,7 @@
 
+char *
+generar_cadena(int );
+
 int 
 aleatorio(int);
 
