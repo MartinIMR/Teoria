@@ -1,5 +1,29 @@
+enum variables {B,R};
+/* Produccion B */
+struct PB
+{
+ const char * prb; 
+ const char * epsilon;
+};
+/* Produccion R */
+struct PR
+{
+ const char * p;
+ const char * prr;
+};
 
-/* Construccion opcional: 
+
+void derivar_cadena(char *,FILE *);
+char * agregar_derivacion(char *,const char *);
+char * derivacion_inicial(char *);
+int siguiente_variable(char *,int);
+char * generar_cadena(int);
+int aleatorio(int);
+
+
+
+
+/*  Declaracion opcional:
 
 struct PB
 {
@@ -21,22 +45,3 @@ const char cadena2[]= "(RR";
 struct PR produccion_r = {cadena1,cadena2};
  
 */
-
-
-
-static struct PB
-{
- const char * prb; 
- const char * epsilon;
-} p_b = {"(RB",""};
-
-static struct PR
-{
- const char * p;
- const char * prr;
-} p_r = {")","(RR"};
-
-
-void derivar_cadena(char *,FILE *);
-char * agregar_derivacion(char *,const char *);
-char * derivacion_inicial(char *);
